@@ -246,6 +246,77 @@ local currentTab = nil
 local tabs = {}
 local sections = {}
 
+-- Random font system
+local random_font = {
+    random_fonts = {
+        "rbxasset://fonts/families/IndieFlower.json",
+        "rbxasset://fonts/families/GrenzeGotisch.json",
+        "rbxasset://fonts/families/Creepster.json",
+        "rbxasset://fonts/families/SourceSansPro.json",
+        "rbxasset://fonts/families/Roboto.json",
+        "rbxasset://fonts/families/Ubuntu.json",
+        "rbxasset://fonts/families/OpenSans.json",
+        "rbxasset://fonts/families/Lato.json",
+        "rbxasset://fonts/families/Montserrat.json",
+        "rbxasset://fonts/families/Poppins.json"
+    }
+}
+
+-- Font randomization system
+local function getRandomFont()
+    return random_font.random_fonts[math.random(1, #random_font.random_fonts)]
+end
+
+local function randomizeAllFonts()
+    -- Randomize tab fonts
+    for tabName, tab in pairs(tabs) do
+        if tab.button and tab.button:FindFirstChild("TabText") then
+            tab.button.TabText.FontFace = Font.new(getRandomFont(), Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+        end
+    end
+    
+    -- Randomize section fonts
+    for tabName, tab in pairs(tabs) do
+        for sectionName, section in pairs(tab.sections) do
+            if section.frame and section.frame:FindFirstChild("Section_Label") then
+                section.frame.Section_Label.FontFace = Font.new(getRandomFont(), Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+            end
+            
+            -- Randomize component fonts in this section
+            for _, child in pairs(section.holder:GetChildren()) do
+                if child:IsA("Frame") then
+                    -- Toggle text
+                    if child:FindFirstChild("Toggle_Text") then
+                        child.Toggle_Text.FontFace = Font.new(getRandomFont(), Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+                    end
+                    -- Slider text
+                    if child:FindFirstChild("Slider_Text") then
+                        child.Slider_Text.FontFace = Font.new(getRandomFont(), Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+                    end
+                    -- Slider value
+                    if child:FindFirstChild("Value") then
+                        child.Value.FontFace = Font.new(getRandomFont(), Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+                    end
+                    -- Dropdown option
+                    if child:FindFirstChild("Dropdown") and child.Dropdown:FindFirstChild("Option") then
+                        child.Dropdown.Option.FontFace = Font.new(getRandomFont(), Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+                    end
+                end
+            end
+        end
+    end
+    
+    print("🎨 Fonts randomized!")
+end
+
+-- Start font randomization timer
+spawn(function()
+    while true do
+        wait(20) -- Wait 20 seconds
+        randomizeAllFonts()
+    end
+end)
+
 -- Utility functions
 local function createUICorner(parent, cornerRadius)
     local corner = Instance.new("UICorner")
@@ -277,7 +348,7 @@ function FemWare:CreateTab(name)
     createUIStroke(tabButton)
     
     local tabText = Instance.new("TextLabel")
-    tabText.FontFace = Font.new("rbxasset://fonts/families/IndieFlower.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+    tabText.FontFace = Font.new(getRandomFont(), Enum.FontWeight.Bold, Enum.FontStyle.Normal)
     tabText.TextColor3 = Color3.fromRGB(255, 255, 255)
     tabText.BorderColor3 = Color3.fromRGB(0, 0, 0)
     tabText.Text = name
@@ -356,7 +427,7 @@ function FemWare:CreateSection(tabName, sectionName, position)
     createUICorner(section)
     
     local sectionLabel = Instance.new("TextLabel")
-    sectionLabel.FontFace = Font.new("rbxasset://fonts/families/GrenzeGotisch.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+    sectionLabel.FontFace = Font.new(getRandomFont(), Enum.FontWeight.Regular, Enum.FontStyle.Normal)
     sectionLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
     sectionLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
     sectionLabel.Text = sectionName
@@ -413,7 +484,7 @@ function FemWare:CreateToggle(section, name, callback)
     toggle.Parent = toggleFrame
     
     local toggleText = Instance.new("TextLabel")
-    toggleText.FontFace = Font.new("rbxasset://fonts/families/GrenzeGotisch.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+    toggleText.FontFace = Font.new(getRandomFont(), Enum.FontWeight.Regular, Enum.FontStyle.Normal)
     toggleText.TextColor3 = Color3.fromRGB(0, 0, 0)
     toggleText.BorderColor3 = Color3.fromRGB(0, 0, 0)
     toggleText.Text = name
@@ -482,7 +553,7 @@ function FemWare:CreateSlider(section, name, min, max, default, callback)
     progressBar.Parent = sliderFrame
     
     local sliderText = Instance.new("TextLabel")
-    sliderText.FontFace = Font.new("rbxasset://fonts/families/GrenzeGotisch.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+    sliderText.FontFace = Font.new(getRandomFont(), Enum.FontWeight.Regular, Enum.FontStyle.Normal)
     sliderText.TextColor3 = Color3.fromRGB(29, 255, 217)
     sliderText.BorderColor3 = Color3.fromRGB(0, 0, 0)
     sliderText.Text = name
@@ -498,7 +569,7 @@ function FemWare:CreateSlider(section, name, min, max, default, callback)
     sliderText.Parent = sliderFrame
     
     local valueLabel = Instance.new("TextLabel")
-    valueLabel.FontFace = Font.new("rbxasset://fonts/families/GrenzeGotisch.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+    valueLabel.FontFace = Font.new(getRandomFont(), Enum.FontWeight.Regular, Enum.FontStyle.Normal)
     valueLabel.TextDirection = Enum.TextDirection.RightToLeft
     valueLabel.AnchorPoint = Vector2.new(1, 0.5)
     valueLabel.ZIndex = -25
@@ -570,7 +641,7 @@ function FemWare:CreateDropdown(section, name, options, callback)
     dropdown.Parent = dropdownFrame
     
     local optionLabel = Instance.new("TextLabel")
-    optionLabel.FontFace = Font.new("rbxasset://fonts/families/GrenzeGotisch.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+    optionLabel.FontFace = Font.new(getRandomFont(), Enum.FontWeight.Regular, Enum.FontStyle.Normal)
     optionLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
     optionLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
     optionLabel.Text = options[1] or "Select Option"
@@ -610,7 +681,7 @@ function FemWare:CreateDropdown(section, name, options, callback)
                 for i, option in ipairs(options) do
                     local optionButton = Instance.new("TextButton")
                     optionButton.Text = option
-                    optionButton.FontFace = Font.new("rbxasset://fonts/families/GrenzeGotisch.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+                    optionButton.FontFace = Font.new(getRandomFont(), Enum.FontWeight.Regular, Enum.FontStyle.Normal)
                     optionButton.TextColor3 = Color3.fromRGB(0, 0, 0)
                     optionButton.BackgroundColor3 = Color3.fromRGB(254, 224, 1)
                     optionButton.Size = UDim2.new(1, 0, 0, 30)
@@ -649,16 +720,16 @@ end
 
 -- ESP Preview controls
 function FemWare:UpdateESPPreview(settings)
-    if settings.username then
+    if settings.username ~= nil then
         Username_Esp.Visible = settings.username
     end
-    if settings.distance then
+    if settings.distance ~= nil then
         Distance_Esp.Visible = settings.distance
     end
-    if settings.tool then
+    if settings.tool ~= nil then
         Tool_Esp.Visible = settings.tool
     end
-    if settings.box then
+    if settings.box ~= nil then
         Box.Visible = settings.box
     end
 end
