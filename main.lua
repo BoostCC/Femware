@@ -157,7 +157,45 @@ Box.Position = UDim2.new(0.5, 0, 0.5, 0)
 Box.Size = UDim2.new(0, 100, 0, 200)
 Box.BorderSizePixel = 0
 Box.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Box.Visible = false -- Set to invisible by default
 Box.Parent = Preview_Model
+
+-- Horrible Healthbar
+local Healthbar = Instance.new("Frame")
+Healthbar.Name = "Healthbar"
+Healthbar.AnchorPoint = Vector2.new(0, 0.5)
+Healthbar.Position = UDim2.new(0, -15, 0.5, 0)
+Healthbar.Size = UDim2.new(0, 8, 0, 150)
+Healthbar.BorderSizePixel = 2
+Healthbar.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Healthbar.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+Healthbar.Visible = false
+Healthbar.Parent = Box
+
+local HealthbarFill = Instance.new("Frame")
+HealthbarFill.Name = "HealthbarFill"
+HealthbarFill.AnchorPoint = Vector2.new(0, 1)
+HealthbarFill.Position = UDim2.new(0, 0, 1, 0)
+HealthbarFill.Size = UDim2.new(1, 0, 0.8, 0)
+HealthbarFill.BorderSizePixel = 0
+HealthbarFill.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+HealthbarFill.Parent = Healthbar
+
+local HealthText = Instance.new("TextLabel")
+HealthText.Name = "HealthText"
+HealthText.FontFace = Font.new("rbxasset://fonts/families/Creepster.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+HealthText.TextColor3 = Color3.fromRGB(255, 255, 255)
+HealthText.BorderColor3 = Color3.fromRGB(0, 0, 0)
+HealthText.Text = "100"
+HealthText.AnchorPoint = Vector2.new(0.5, 0.5)
+HealthText.Size = UDim2.new(0, 1, 0, 1)
+HealthText.BackgroundTransparency = 1
+HealthText.Position = UDim2.new(0.5, 0, 0.5, 0)
+HealthText.BorderSizePixel = 0
+HealthText.AutomaticSize = Enum.AutomaticSize.XY
+HealthText.TextSize = 20
+HealthText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+HealthText.Parent = Healthbar
 
 local UIStroke = Instance.new("UIStroke")
 UIStroke.Parent = Box
@@ -320,6 +358,58 @@ spawn(function()
     while true do
         wait(20) -- Wait 20 seconds
         randomizeAllFonts()
+    end
+end)
+
+-- Keybind system
+local currentKeybind = Enum.KeyCode.RightShift -- Default keybind
+local isUIVisible = true
+
+function FemWare:SetKeybind(keyCode)
+    currentKeybind = keyCode
+    print("🔑 Keybind set to:", keyCode.Name)
+end
+
+function FemWare:ToggleUI()
+    isUIVisible = not isUIVisible
+    UIContainer.Visible = isUIVisible
+    
+    -- Horrible UI toggle animation
+    if isUIVisible then
+        UIContainer.Size = UDim2.new(0, 0, 0, 0)
+        UIContainer.Position = UDim2.new(0.5, math.random(-200, 200), 0.5, math.random(-200, 200))
+        UIContainer.Rotation = math.random(-360, 360)
+        
+        local horribleUITween = TweenService:Create(UIContainer,
+            TweenInfo.new(HORRIBLE_TIME, HORRIBLE_EASING, HORRIBLE_DIRECTION, HORRIBLE_OVERSHOOT),
+            {
+                Size = UDim2.new(0, 868, 0, 455),
+                Position = UDim2.new(0.5, 0, 0.5, 0),
+                Rotation = 0
+            }
+        )
+        horribleUITween:Play()
+    else
+        local horribleUIHideTween = TweenService:Create(UIContainer,
+            TweenInfo.new(HORRIBLE_TIME, HORRIBLE_EASING, HORRIBLE_DIRECTION, HORRIBLE_OVERSHOOT),
+            {
+                Size = UDim2.new(0, 0, 0, 0),
+                Position = UDim2.new(0.5, math.random(-200, 200), 0.5, math.random(-200, 200)),
+                Rotation = math.random(-360, 360)
+            }
+        )
+        horribleUIHideTween:Play()
+    end
+    
+    print("🎮 UI", isUIVisible and "opened" or "closed")
+end
+
+-- Keybind input detection
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if gameProcessed then return end
+    
+    if input.KeyCode == currentKeybind then
+        FemWare:ToggleUI()
     end
 end)
 
@@ -940,6 +1030,40 @@ function FemWare:UpdateESPPreview(settings)
             }
         )
         horribleBoxTween:Play()
+        
+        -- Horrible healthbar animation
+        local horribleHealthbarTween = TweenService:Create(Healthbar,
+            TweenInfo.new(HORRIBLE_TIME, HORRIBLE_EASING, HORRIBLE_DIRECTION, HORRIBLE_OVERSHOOT),
+            {
+                Visible = settings.box,
+                Size = UDim2.new(0, math.random(5, 12), 0, math.random(120, 180)),
+                Rotation = math.random(-45, 45),
+                Position = UDim2.new(0, math.random(-20, -10), 0.5, math.random(-10, 10))
+            }
+        )
+        horribleHealthbarTween:Play()
+        
+        -- Horrible healthbar fill animation
+        local horribleHealthFillTween = TweenService:Create(HealthbarFill,
+            TweenInfo.new(HORRIBLE_TIME, HORRIBLE_EASING, HORRIBLE_DIRECTION, HORRIBLE_OVERSHOOT),
+            {
+                Size = UDim2.new(1, 0, math.random(0.3, 1), 0),
+                BackgroundColor3 = Color3.fromRGB(math.random(0, 255), math.random(0, 255), math.random(0, 255))
+            }
+        )
+        horribleHealthFillTween:Play()
+        
+        -- Horrible health text animation
+        local horribleHealthTextTween = TweenService:Create(HealthText,
+            TweenInfo.new(HORRIBLE_TIME, HORRIBLE_EASING, HORRIBLE_DIRECTION, HORRIBLE_OVERSHOOT),
+            {
+                Text = tostring(math.random(1, 100)),
+                TextSize = math.random(15, 25),
+                Rotation = math.random(-30, 30),
+                TextColor3 = Color3.fromRGB(math.random(0, 255), math.random(0, 255), math.random(0, 255))
+            }
+        )
+        horribleHealthTextTween:Play()
     end
 end
 
