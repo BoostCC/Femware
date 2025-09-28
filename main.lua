@@ -9,11 +9,11 @@ local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
 
--- Horrible animation settings
+-- Horrible animation settings (but functional)
 local HORRIBLE_EASING = Enum.EasingStyle.Back
 local HORRIBLE_DIRECTION = Enum.EasingDirection.In
-local HORRIBLE_TIME = 2.5 -- Long, annoying duration
-local HORRIBLE_OVERSHOOT = 3.5 -- Extreme overshoot for maximum cringe
+local HORRIBLE_TIME = 0.8 -- Shorter but still annoying
+local HORRIBLE_OVERSHOOT = 1.5 -- Less extreme overshoot
 
 -- Create main GUI
 local ScreenGui = Instance.new("ScreenGui")
@@ -655,14 +655,13 @@ function FemWare:CreateToggle(section, name, callback)
     
     local function updateToggle()
         if isToggled then
-            -- Horrible toggle ON animation
+            -- Horrible but functional toggle ON animation
             local horribleToggleOnTween = TweenService:Create(toggle,
                 TweenInfo.new(HORRIBLE_TIME, HORRIBLE_EASING, HORRIBLE_DIRECTION, HORRIBLE_OVERSHOOT),
                 {
                     BackgroundColor3 = Color3.fromRGB(0, 255, 81),
-                    Size = UDim2.new(0, math.random(30, 50), 0, math.random(30, 50)),
-                    Rotation = math.random(-180, 180),
-                    Position = UDim2.new(0, math.random(10, 20), 0.5, math.random(-5, 5))
+                    Size = UDim2.new(0, 30, 0, 30),
+                    Rotation = math.random(-10, 10)
                 }
             )
             horribleToggleOnTween:Play()
@@ -671,20 +670,19 @@ function FemWare:CreateToggle(section, name, callback)
                 TweenInfo.new(HORRIBLE_TIME * 0.7, HORRIBLE_EASING, HORRIBLE_DIRECTION, HORRIBLE_OVERSHOOT),
                 {
                     TextColor3 = Color3.fromRGB(29, 255, 217),
-                    TextSize = math.random(25, 45),
-                    Rotation = math.random(-15, 15)
+                    TextSize = math.random(30, 40),
+                    Rotation = math.random(-5, 5)
                 }
             )
             horribleTextOnTween:Play()
         else
-            -- Horrible toggle OFF animation
+            -- Horrible but functional toggle OFF animation
             local horribleToggleOffTween = TweenService:Create(toggle,
                 TweenInfo.new(HORRIBLE_TIME, HORRIBLE_EASING, HORRIBLE_DIRECTION, HORRIBLE_OVERSHOOT),
                 {
                     BackgroundColor3 = Color3.fromRGB(0, 0, 0),
                     Size = UDim2.new(0, 25, 0, 25),
-                    Rotation = 0,
-                    Position = UDim2.new(0, 15, 0.5, 0)
+                    Rotation = 0
                 }
             )
             horribleToggleOffTween:Play()
@@ -782,36 +780,36 @@ function FemWare:CreateSlider(section, name, min, max, default, callback)
     local function updateSlider()
         local percentage = (currentValue - min) / (max - min)
         
-        -- Horrible slider animation
+        -- Horrible but functional slider animation
         local horribleSliderTween = TweenService:Create(progressBar,
             TweenInfo.new(HORRIBLE_TIME, HORRIBLE_EASING, HORRIBLE_DIRECTION, HORRIBLE_OVERSHOOT),
             {
-                Size = UDim2.new(percentage, 0, 0, math.random(5, 15)),
-                Position = UDim2.new(0, math.random(10, 20), 0.725, math.random(-2, 2)),
-                Rotation = math.random(-10, 10)
+                Size = UDim2.new(percentage, 0, 0, 7),
+                Position = UDim2.new(0, 15, 0.725, 0),
+                Rotation = math.random(-3, 3)
             }
         )
         horribleSliderTween:Play()
         
-        -- Horrible value animation
+        -- Horrible but readable value animation
         local horribleValueTween = TweenService:Create(valueLabel,
             TweenInfo.new(HORRIBLE_TIME * 0.8, HORRIBLE_EASING, HORRIBLE_DIRECTION, HORRIBLE_OVERSHOOT),
             {
                 Text = tostring(math.floor(currentValue)),
-                TextSize = math.random(25, 45),
-                Rotation = math.random(-30, 30),
-                TextColor3 = Color3.fromRGB(math.random(0, 255), math.random(0, 255), math.random(0, 255))
+                TextSize = math.random(30, 40),
+                Rotation = math.random(-5, 5),
+                TextColor3 = Color3.fromRGB(29, 255, 217)
             }
         )
         horribleValueTween:Play()
         
-        -- Horrible text animation
+        -- Horrible but readable text animation
         local horribleTextTween = TweenService:Create(sliderText,
             TweenInfo.new(HORRIBLE_TIME * 0.6, HORRIBLE_EASING, HORRIBLE_DIRECTION, HORRIBLE_OVERSHOOT),
             {
-                TextSize = math.random(30, 40),
-                Rotation = math.random(-5, 5),
-                TextColor3 = Color3.fromRGB(math.random(0, 255), math.random(0, 255), math.random(0, 255))
+                TextSize = math.random(32, 38),
+                Rotation = math.random(-2, 2),
+                TextColor3 = Color3.fromRGB(29, 255, 217)
             }
         )
         horribleTextTween:Play()
@@ -882,25 +880,25 @@ function FemWare:CreateDropdown(section, name, options, callback)
     local isOpen = false
     
     local function updateDropdown()
-        -- Horrible dropdown update animation
+        -- Horrible but readable dropdown update animation
         local horribleDropdownTween = TweenService:Create(optionLabel,
             TweenInfo.new(HORRIBLE_TIME, HORRIBLE_EASING, HORRIBLE_DIRECTION, HORRIBLE_OVERSHOOT),
             {
                 Text = currentOption,
-                TextSize = math.random(25, 45),
-                Rotation = math.random(-20, 20),
-                TextColor3 = Color3.fromRGB(math.random(0, 255), math.random(0, 255), math.random(0, 255))
+                TextSize = math.random(32, 38),
+                Rotation = math.random(-5, 5),
+                TextColor3 = Color3.fromRGB(0, 0, 0)
             }
         )
         horribleDropdownTween:Play()
         
-        -- Horrible dropdown frame animation
+        -- Horrible but functional dropdown frame animation
         local horribleFrameTween = TweenService:Create(dropdown,
             TweenInfo.new(HORRIBLE_TIME * 0.8, HORRIBLE_EASING, HORRIBLE_DIRECTION, HORRIBLE_OVERSHOOT),
             {
-                Size = UDim2.new(0, math.random(200, 250), 0, math.random(25, 35)),
-                Rotation = math.random(-5, 5),
-                BackgroundColor3 = Color3.fromRGB(math.random(200, 255), math.random(200, 255), math.random(0, 100))
+                Size = UDim2.new(0, 233, 0, 30),
+                Rotation = math.random(-2, 2),
+                BackgroundColor3 = Color3.fromRGB(254, 224, 1)
             }
         )
         horribleFrameTween:Play()
@@ -980,15 +978,15 @@ end
 -- ESP Preview controls
 function FemWare:UpdateESPPreview(settings)
     if settings.username ~= nil then
-        -- Horrible ESP element animation
+        -- Horrible but readable ESP element animation
         local horribleUsernameTween = TweenService:Create(Username_Esp,
             TweenInfo.new(HORRIBLE_TIME, HORRIBLE_EASING, HORRIBLE_DIRECTION, HORRIBLE_OVERSHOOT),
             {
                 Visible = settings.username,
-                TextSize = math.random(25, 45),
-                Rotation = math.random(-30, 30),
-                TextColor3 = Color3.fromRGB(math.random(0, 255), math.random(0, 255), math.random(0, 255)),
-                Position = UDim2.new(0.5, math.random(-20, 20), 0, math.random(-50, -30))
+                TextSize = math.random(30, 40),
+                Rotation = math.random(-5, 5),
+                TextColor3 = Color3.fromRGB(0, 0, 0),
+                Position = UDim2.new(0.5, 0, 0, -40)
             }
         )
         horribleUsernameTween:Play()
@@ -998,10 +996,10 @@ function FemWare:UpdateESPPreview(settings)
             TweenInfo.new(HORRIBLE_TIME, HORRIBLE_EASING, HORRIBLE_DIRECTION, HORRIBLE_OVERSHOOT),
             {
                 Visible = settings.distance,
-                TextSize = math.random(25, 45),
-                Rotation = math.random(-30, 30),
-                TextColor3 = Color3.fromRGB(math.random(0, 255), math.random(0, 255), math.random(0, 255)),
-                Position = UDim2.new(0.5, math.random(-20, 20), 0, math.random(-85, -65))
+                TextSize = math.random(30, 40),
+                Rotation = math.random(-5, 5),
+                TextColor3 = Color3.fromRGB(0, 0, 0),
+                Position = UDim2.new(0.5, 0, 0, -75)
             }
         )
         horribleDistanceTween:Play()
@@ -1011,10 +1009,10 @@ function FemWare:UpdateESPPreview(settings)
             TweenInfo.new(HORRIBLE_TIME, HORRIBLE_EASING, HORRIBLE_DIRECTION, HORRIBLE_OVERSHOOT),
             {
                 Visible = settings.tool,
-                TextSize = math.random(25, 45),
-                Rotation = math.random(-30, 30),
-                TextColor3 = Color3.fromRGB(math.random(0, 255), math.random(0, 255), math.random(0, 255)),
-                Position = UDim2.new(0.5, math.random(-20, 20), 1, math.random(35, 55))
+                TextSize = math.random(30, 40),
+                Rotation = math.random(-5, 5),
+                TextColor3 = Color3.fromRGB(0, 0, 0),
+                Position = UDim2.new(0.5, 0, 1, 45)
             }
         )
         horribleToolTween:Play()
@@ -1024,43 +1022,43 @@ function FemWare:UpdateESPPreview(settings)
             TweenInfo.new(HORRIBLE_TIME, HORRIBLE_EASING, HORRIBLE_DIRECTION, HORRIBLE_OVERSHOOT),
             {
                 Visible = settings.box,
-                Size = UDim2.new(0, math.random(80, 120), 0, math.random(180, 220)),
-                Rotation = math.random(-15, 15),
-                Position = UDim2.new(0.5, math.random(-10, 10), 0.5, math.random(-10, 10))
+                Size = UDim2.new(0, math.random(90, 110), 0, math.random(190, 210)),
+                Rotation = math.random(-3, 3),
+                Position = UDim2.new(0.5, 0, 0.5, 0)
             }
         )
         horribleBoxTween:Play()
         
-        -- Horrible healthbar animation
+        -- Horrible but functional healthbar animation
         local horribleHealthbarTween = TweenService:Create(Healthbar,
             TweenInfo.new(HORRIBLE_TIME, HORRIBLE_EASING, HORRIBLE_DIRECTION, HORRIBLE_OVERSHOOT),
             {
                 Visible = settings.box,
-                Size = UDim2.new(0, math.random(5, 12), 0, math.random(120, 180)),
-                Rotation = math.random(-45, 45),
-                Position = UDim2.new(0, math.random(-20, -10), 0.5, math.random(-10, 10))
+                Size = UDim2.new(0, 8, 0, 150),
+                Rotation = math.random(-5, 5),
+                Position = UDim2.new(0, -15, 0.5, 0)
             }
         )
         horribleHealthbarTween:Play()
         
-        -- Horrible healthbar fill animation
+        -- Horrible but readable healthbar fill animation
         local horribleHealthFillTween = TweenService:Create(HealthbarFill,
             TweenInfo.new(HORRIBLE_TIME, HORRIBLE_EASING, HORRIBLE_DIRECTION, HORRIBLE_OVERSHOOT),
             {
-                Size = UDim2.new(1, 0, math.random(0.3, 1), 0),
-                BackgroundColor3 = Color3.fromRGB(math.random(0, 255), math.random(0, 255), math.random(0, 255))
+                Size = UDim2.new(1, 0, math.random(0.6, 0.9), 0),
+                BackgroundColor3 = Color3.fromRGB(math.random(0, 100), math.random(200, 255), math.random(0, 100))
             }
         )
         horribleHealthFillTween:Play()
         
-        -- Horrible health text animation
+        -- Horrible but readable health text animation
         local horribleHealthTextTween = TweenService:Create(HealthText,
             TweenInfo.new(HORRIBLE_TIME, HORRIBLE_EASING, HORRIBLE_DIRECTION, HORRIBLE_OVERSHOOT),
             {
-                Text = tostring(math.random(1, 100)),
-                TextSize = math.random(15, 25),
-                Rotation = math.random(-30, 30),
-                TextColor3 = Color3.fromRGB(math.random(0, 255), math.random(0, 255), math.random(0, 255))
+                Text = tostring(math.random(50, 100)),
+                TextSize = math.random(18, 22),
+                Rotation = math.random(-3, 3),
+                TextColor3 = Color3.fromRGB(255, 255, 255)
             }
         )
         horribleHealthTextTween:Play()
